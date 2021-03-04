@@ -7,6 +7,9 @@ function DefaultPlayer() {
     },
     notations: {
       current: "Standard"
+    },
+    tabs: {
+      current: 1
     }
   }
 }
@@ -19,13 +22,17 @@ const store = new Vuex.Store({
     currentValues: state => {
       return {
         coins: state.coins.current,
-        notation: state.notations.current
+        notation: state.notations.current,
+        tab: state.tabs.current
       }
     }
   },
   mutations: {
     INCREMENT_COINS: (state, payload) => {
       state.coins.current = state.coins.current.add(payload);
+    },
+    SWITCH_TAB: (state, payload) => {
+      state.tabs.current = payload;
     }
   }
 });
@@ -37,7 +44,7 @@ const app = new Vue({
     this.req = requestAnimationFrame(this.tick);
     this.time = 0;
     this.saveInterval = setInterval(this.save, 15000);
-    this.notes = ["Standard", "Scientific", "Logarithmic", "Mixed Scientific", "Alphabet"];
+    this.notes = ["Standard", "Scientific", "Logarithmic", "Mixed Scientific", "Alphabetic"];
     this.letters = ['K', 'M', 'B', 'T', 'Qa', 'Qi', 'Sx', 'Sp'];
     this.alphabet = `abcdefghijklmnopqrstuvwxyz`;
   },
@@ -54,11 +61,12 @@ const app = new Vue({
   },
   methods: {
     ...Vuex.mapMutations({
-      incrementCoins: "INCREMENT_COINS"
+      incrementCoins: "INCREMENT_COINS",
+      switchTab: "SWITCH_TAB"
     }),
     tick(timeTaken) {
       const deltaTime = timeTaken - this.time;
-      this.incrementCoins(1 * (deltaTime / 1000));
+      this.incrementCoins(nD(1e307).mul(deltaTime / 1000));
       this.time = timeTaken;
       this.req = requestAnimationFrame(this.tick);
     },
@@ -106,7 +114,7 @@ const app = new Vue({
           mantissa = val.div(nD(10).pow(exponent >= 15 ? exponent : power));
           string = `${mantissa.toFixed(2)}${exponent >= 15 ? 'e' + exponent : ' ' + letter}`;
           break;
-        case "alphabet":
+        case "alphabetic":
           // 1000 = 1.00aa
           mantissa = val.div(nD(10).pow(power));
           string = `${mantissa.toFixed(2)}${character1}${character2}`;

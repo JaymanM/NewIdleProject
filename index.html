@@ -16,9 +16,17 @@
 </head>
 <body>
   <div id="app">
-    {{ formatted.coins }}
-    <br>
-    <button @click="changeNotation">Current Notation: {{ current.notation }}</button>
+    <center>
+      <span>You currently have {{ formatted.coins }} coins.</span>
+      <br>
+      <button @click="switchTab(1)">Main</button>
+      <button @click="switchTab(2)">Options</button>
+      <div class="container" v-if="current.tab === 1"></div>
+      <div class="container" v-if="current.tab === 2">
+        <button @click="changeNotation">Current Notation: {{ current.notation }}</button>
+      </div>
+      <a href="https://github.com/JaymanM/NewIdleProject" target="_blank">Github Repository</a>
+    </center>
   </div>
 </body>
 </html>
