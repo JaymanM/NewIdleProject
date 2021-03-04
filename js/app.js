@@ -37,8 +37,9 @@ const app = new Vue({
     this.req = requestAnimationFrame(this.tick);
     this.time = 0;
     this.saveInterval = setInterval(this.save, 15000);
-    this.notes = ["Standard", "Scientific", "Logarithmic", "Mixed Scientific"];
+    this.notes = ["Standard", "Scientific", "Logarithmic", "Mixed Scientific", "Alphabet"];
     this.letters = ['K', 'M', 'B', 'T', 'Qa', 'Qi', 'Sx', 'Sp'];
+    this.alphabet = `abcdefghijklmnopqrstuvwxyz`;
   },
   data: () => store.state,
   computed: {
@@ -85,7 +86,10 @@ const app = new Vue({
       let index = x.floor() - 1;
       let power = exponent - remainder;
       let letter = this.letters[index];
-    
+      let y = nD(index / 26).floor();
+      let character1 = this.alphabet.charAt(y);
+      let character2 = this.alphabet.charAt(index % 26);
+
       switch (note.toLowerCase()) {
         case "standard":
           mantissa = val.div(nD(10).pow(power));
@@ -101,6 +105,11 @@ const app = new Vue({
         case "mixed scientific":
           mantissa = val.div(nD(10).pow(exponent >= 15 ? exponent : power));
           string = `${mantissa.toFixed(2)}${exponent >= 15 ? 'e' + exponent : ' ' + letter}`;
+          break;
+        case "alphabet":
+          // 1000 = 1.00aa
+          mantissa = val.div(nD(10).pow(power));
+          string = `${mantissa.toFixed(2)}${character1}${character2}`;
           break;
       }
     
