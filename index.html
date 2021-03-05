@@ -17,11 +17,22 @@
 <body>
   <div id="app">
     <center>
-      <span>You currently have {{ formatted.coins }} coins.</span>
+      <span class="font16">You currently have {{ formatted.apples }} apples.</span>
+      <br>
+      <span class="font12">You are picking {{ formatted.apples_per_sec }} apples every second.</span>
       <br>
       <button @click="switchTab(1)">Main</button>
       <button @click="switchTab(2)">Options</button>
-      <div class="container" v-if="current.tab === 1"></div>
+      <div class="container" v-if="current.tab === 1">
+        You have {{ formatted.hands }} hands picking apples.
+        <br>
+        <br>
+        <button @click="buyHand">
+          Grow an extra hand.
+          <br>
+          Requires {{ formatted.hand_cost }} apples to be traded.
+        </button>
+      </div>
       <div class="container" v-if="current.tab === 2">
         <button @click="changeNotation">Current Notation: {{ current.notation }}</button>
       </div>

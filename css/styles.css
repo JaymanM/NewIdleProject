@@ -5,8 +5,15 @@
 
 span {
   display: inline-block;
+  padding: 5px;
+}
+
+.font16 {
   font-size: calc(16px + 0.5vw);
-  padding: 10px;
+}
+
+.font12 {
+  font-size: calc(12px + 0.5vw);
 }
 
 button {
