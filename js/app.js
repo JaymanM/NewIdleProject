@@ -109,8 +109,11 @@ const app = new Vue({
     },
     load,
     reset() {
-      localStorage.removeItem("idle_save");
-      location.reload();
+      let confirmed = confirm("Would you like to reset your save entirely?");
+      if (confirmed) {
+        localStorage.removeItem("idle_save");
+        location.reload();
+      }
     },
     buyHand() {
       if (this.current.apples.gte(this.cost.hands)) {
