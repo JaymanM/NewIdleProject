@@ -1,3 +1,4 @@
+// The below functions were created by etnpce for me specifically to handle serialization automatically.
 let tagged_classes = new Map();
 
 const register_tag = clazz => tagged_classes.set(clazz.name, clazz)
