@@ -8,6 +8,14 @@ span {
   padding: 5px;
 }
 
+.canBuy {
+  background-color: lightgreen;
+}
+
+.cantBuy {
+  background-color: lightcoral;
+}
+
 .font16 {
   font-size: calc(16px + 0.5vw);
 }

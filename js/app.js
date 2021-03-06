@@ -44,6 +44,13 @@ const store = new Vuex.Store({
       return {
         hand: nD(1)
       }
+    },
+    booleanCanValues: (state, getters) => {
+      return {
+        buy: {
+          hand: state.apples.current.gte(getters.costValues.hands)
+        }
+      }
     }
   },
   mutations: {
@@ -79,8 +86,10 @@ const app = new Vue({
       current: "currentValues",
       per_sec: "perSecValues",
       cost: "costValues",
-      gain_per: "gainPerValues"
+      gain_per: "gainPerValues",
+      can: "booleanCanValues"
     }),
+    // Could make computed values for the boolean accessors, but its not necessary.
     formatted() {
       return {
         apples: this.format(this.current.notation, this.current.apples),
@@ -116,7 +125,7 @@ const app = new Vue({
       }
     },
     buyHand() {
-      if (this.current.apples.gte(this.cost.hands)) {
+      if (this.can.buy.hand) {
         this.decrementApples(this.cost.hands);
         this.incrementHands(1);
       }

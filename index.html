@@ -27,7 +27,7 @@
         You have {{ formatted.hands }} hands picking {{ formatted.gain_per_hand }} apples each.
         <br>
         <br>
-        <button @click="buyHand">
+        <button :class="{canBuy:can.buy.hand, cantBuy:!can.buy.hand}" @click="buyHand">
           Grow an extra hand.
           <br>
           Requires {{ formatted.hand_cost }} apples to be traded.
