@@ -4,13 +4,9 @@ function DefaultPlayer() {
   return {
     apples: {
       current: nD(0),
-      per: {
-        sec: nD(2)
-      }
     },
     hands: {
-      current: nD(2),
-      cost: nD(50)
+      current: nD(2)
     },
     notations: {
       current: "Standard"
@@ -34,14 +30,19 @@ const store = new Vuex.Store({
         tab: state.tabs.current
       }
     },
-    perSecValues: state => {
+    perSecValues: (state, getters) => {
       return {
-        apples: state.apples.per.sec
+        apples: nD(state.hands.current).mul(getters.gainPerValues.hand)
       }
     },
     costValues: state => {
       return {
-        hands: state.hands.cost
+        hands: nD(state.hands.current).pow(2).mul(5).floor()
+      }
+    },
+    gainPerValues: state => {
+      return {
+        hand: nD(1)
       }
     }
   },
@@ -52,14 +53,8 @@ const store = new Vuex.Store({
     DECREMENT_APPLES: (state, payload) => {
       state.apples.current = state.apples.current.sub(payload);
     },
-    INCREMENT_APPLES_PS: (state, payload) => {
-      state.apples.per.sec = state.apples.per.sec.add(payload);
-    },
     INCREMENT_HANDS: (state, payload) => {
       state.hands.current = state.hands.current.add(payload);
-    },
-    SCALE_HAND_COST: (state, payload) => {
-      state.hands.cost = state.hands.cost.mul(payload);
     },
     SWITCH_TAB: (state, payload) => {
       state.tabs.current = payload;
@@ -83,14 +78,16 @@ const app = new Vue({
     ...Vuex.mapGetters({
       current: "currentValues",
       per_sec: "perSecValues",
-      cost: "costValues"
+      cost: "costValues",
+      gain_per: "gainPerValues"
     }),
     formatted() {
       return {
         apples: this.format(this.current.notation, this.current.apples),
         apples_per_sec: this.format(this.current.notation, this.per_sec.apples),
         hands: this.format(this.current.notation, this.current.hands),
-        hand_cost: this.format(this.current.notation, this.cost.hands)
+        hand_cost: this.format(this.current.notation, this.cost.hands),
+        gain_per_hand: this.format(this.current.notation, this.gain_per.hand)
       }
     }
   },
@@ -98,9 +95,7 @@ const app = new Vue({
     ...Vuex.mapMutations({
       incrementApples: "INCREMENT_APPLES",
       decrementApples: "DECREMENT_APPLES",
-      incrementApplesPS: "INCREMENT_APPLES_PS",
       incrementHands: "INCREMENT_HANDS",
-      scaleHandCost: "SCALE_HAND_COST",
       switchTab: "SWITCH_TAB"
     }),
     tick(timeTaken) {
@@ -119,10 +114,8 @@ const app = new Vue({
     },
     buyHand() {
       if (this.current.apples.gte(this.cost.hands)) {
-        this.incrementHands(1);
-        this.incrementApplesPS(1);
         this.decrementApples(this.cost.hands);
-        this.scaleHandCost(1.35);
+        this.incrementHands(1);
       }
     },
     changeNotation() {
