@@ -15,7 +15,7 @@
   <link href="css/styles.css" rel="stylesheet" defer>
 </head>
 <body>
-  <div id="app">
+  <div id="app" :class="{lightmode:current.style=='Light', darkmode:current.style=='Dark'}">
     <center>
       <span class="vw5">You currently have {{ formatted.apples }} apples.</span>
       <br>
@@ -34,6 +34,7 @@
       </div>
       <div class="container" v-if="current.tab === 2">
         <button @click="changeNotation" class="vw1">Current Notation: {{ current.notation }}</button>
+        <button @click="changeStyle" class="vw1">Current Style: {{ current.style }}</button>
         <button @click="reset" class="vw1">Reset Your Game</button>
       </div>
       <span class="vw1">

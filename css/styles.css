@@ -3,6 +3,29 @@
   user-select: none;
 }
 
+body {
+  margin: 0px;
+  padding: 8px;
+}
+
+.lightmode {
+  color: black;
+  background-color: white;
+}
+
+.lightmode .container {
+  border: 4px solid black;
+}
+
+.darkmode {
+  color: white;
+  background-color: black;
+}
+
+.darkmode .container {
+  border: 4px solid white;
+}
+
 span {
   display: inline-block;
   padding: 5px;
@@ -45,5 +68,4 @@ button:active {
   margin: 10px;
   padding: 15px;
   height: 80vh;
-  border: 4px solid black;
 }
