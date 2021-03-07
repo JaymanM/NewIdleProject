@@ -17,26 +17,26 @@
 <body>
   <div id="app">
     <center>
-      <span class="vw7">You currently have {{ formatted.apples }} apples.</span>
+      <span class="vw5">You currently have {{ formatted.apples }} apples.</span>
       <br>
-      <span class="vw5">You are picking {{ formatted.apples_per_sec }} apples every second.</span>
+      <span class="vw3">You are picking {{ formatted.apples_per_sec }} apples every second.</span>
       <br>
-      <button @click="switchTab(1)" class="vw3">Main</button>
-      <button @click="switchTab(2)" class="vw3">Options</button>
+      <button @click="switchTab(1)" class="vw1">Main</button>
+      <button @click="switchTab(2)" class="vw1">Options</button>
       <div class="container" v-if="current.tab === 1">
-        <span class="vw5">You have {{ formatted.hands }} hands picking {{ formatted.gain_per_hand }} apples each.</span>
+        <span class="vw3">You have {{ formatted.hands }} hands picking {{ formatted.gain_per_hand }} apples each.</span>
         <br>
-        <button @click="buyHand" class="vw3" :class="{canBuy:can.buy.hand, cantBuy:!can.buy.hand}">
+        <button @click="buyHand" class="vw1" :class="{canBuy:can.buy.hand, cantBuy:!can.buy.hand}">
           Grow an extra hand.
           <br>
           Requires {{ formatted.hand_cost }} apples to be traded.
         </button>
       </div>
       <div class="container" v-if="current.tab === 2">
-        <button @click="changeNotation" class="vw3">Current Notation: {{ current.notation }}</button>
-        <button @click="reset" class="vw3">Reset Your Game</button>
+        <button @click="changeNotation" class="vw1">Current Notation: {{ current.notation }}</button>
+        <button @click="reset" class="vw1">Reset Your Game</button>
       </div>
-      <span class="vw3">
+      <span class="vw1">
         <a href="https://github.com/JaymanM/NewIdleProject" target="_blank">Github Repository</a> 
         |
         <a href="https://discord.gg/ruP6HfB7hr" target="_blank">Discord</a>

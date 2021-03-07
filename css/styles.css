@@ -16,16 +16,16 @@ span {
   background-color: lightcoral;
 }
 
-.vw7 {
-  font-size: calc(10px + 0.7vw);
-}
-
 .vw5 {
-  font-size: calc(8px + 0.5vw);
+  font-size: calc(12px + 0.5vw);
 }
 
 .vw3 {
-  font-size: calc(6px + 0.4vw);
+  font-size: calc(12px + 0.3vw);
+}
+
+.vw1 {
+  font-size: calc(12px + 0.1vw);
 }
 
 button {
