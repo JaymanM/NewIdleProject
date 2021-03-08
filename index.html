@@ -5,8 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Project No-Name</title>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vuex@3.6.2/dist/vuex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuex@3.6.2"></script>
   <script src="break_eternity.min.js" type="text/javascript" defer></script>
   <script src="js/tagging.js" type="text/javascript" defer></script>
   <script src="js/app.js" type="text/javascript" defer></script>
@@ -21,21 +21,83 @@
       <br>
       <span class="vw3">You are picking {{ formatted.apples_per_sec }} apples every second.</span>
       <br>
-      <button @click="switchTab(1)" class="vw1">Main</button>
-      <button @click="switchTab(2)" class="vw1">Options</button>
+      <button @click="switchTab(1)" class="vw1 navbutton">Main</button>
+      <button @click="switchTab(2)" class="vw1 navbutton">Options</button>
+      <button @click="switchTab(3)" class="vw1 navbutton">Achievements</button>
       <div class="container" v-if="current.tab === 1">
         <span class="vw3">You have {{ formatted.hands }} hands picking {{ formatted.gain_per_hand }} apples each.</span>
         <br>
-        <button @click="buyHand" class="vw1" :class="{canBuy:can.buy.hand, cantBuy:!can.buy.hand}">
+        <button @click="buyHand" class="vw1" :class="{canBuy:can.buy_hand, cantBuy:!can.buy_hand}">
           Grow an extra hand.
           <br>
           Requires {{ formatted.hand_cost }} apples to be traded.
         </button>
+        <br>
+        <br>
+        <span v-if="is.hand_sacrifice_unlocked" class="vw3">You have sacrificed {{ formatted.hands_sacrificed }} hands, strengthening each hand's pick rate by {{ formatted.hand_sacrifice_multi }}x.</span>
+        <br>
+        <button v-if="is.hand_sacrifice_unlocked" @click="sacrificeHand" class="vw1" :class="{canBuy:can.sacrifice_hand, cantBuy:!can.sacrifice_hand}">
+          Sacrifice a hand.
+          <br>
+          Requires {{ formatted.hand_sacrifice_cost }} apples to be traded, as well as at least 3 hands.
+        </button>
       </div>
       <div class="container" v-if="current.tab === 2">
-        <button @click="changeNotation" class="vw1">Current Notation: {{ current.notation }}</button>
-        <button @click="changeStyle" class="vw1">Current Style: {{ current.style }}</button>
-        <button @click="reset" class="vw1">Reset Your Game</button>
+        <!-- Turn the dropdown contents for each options button into a vue component and use a v-for statement to loop through the function calls -->
+        <div class="vw1 optiondropdown">
+          <button class="dropdownoptionbutton">
+            Change Notation
+            <br>
+            Current: {{ current.notation }}
+          </button>
+          <div class="optiondropdowncontent">
+            <div @click="switchNotation('Standard')">Standard</div>
+            <div @click="switchNotation('Scientific')">Scientific</div>
+            <div @click="switchNotation('Logarithmic')">Logarithmic</div>
+            <div @click="switchNotation('Mixed Scientific')">Mixed Scientific</div>
+            <div @click="switchNotation('Alphabetic')">Alphabetic</div>
+            <div @click="switchNotation('Engineering')">Engineering</div>
+            <div @click="switchNotation('Infinity')">Infinity</div>
+          </div>
+        </div>
+        <div class="vw1 optiondropdown">
+          <button class="dropdownoptionbutton">
+            Change Style
+            <br>
+            Current: {{ current.style }}
+          </button>
+          <div class="optiondropdowncontent">
+            <div @click="switchStyle('Light')">Light</div>
+            <div @click="switchStyle('Dark')">Dark</div>
+          </div>
+        </div>
+        <div class="vw1 optiondropdown">
+          <button class="dropdownoptionbutton">
+            Change Number Precision
+            <br>
+            Current: {{ current.precision }} D.P
+          </button>
+          <div class="optiondropdowncontent">
+            <div @click="switchPrecision(0)">0</div>
+            <div @click="switchPrecision(1)">1</div>
+            <div @click="switchPrecision(2)">2</div>
+            <div @click="switchPrecision(3)">3</div>
+            <div @click="switchPrecision(4)">4</div>
+            <div @click="switchPrecision(5)">5</div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <button @click="reset" class="vw1 normaloptionbutton">Reset Your Game</button>
+        <button @click="save" class="vw1 normaloptionbutton">Save Your Game</button>
+      </div>
+      <div class="container" v-if="current.tab === 3">
+        <span class="vw1">You have completed {{ formatted.achievements_completed }} achievements, strengthening each hand's pick rate by {{ formatted.achievement_multi }}x.</span>
+        <br>
+        <br>
+        <div class="achGrid">
+          <achievement v-for="i in Object.keys(achievementData)" :title="achievementData[i].title" :pre="achievementData[i].pre" :suf="achievementData[i].suf" :req="formatted.achievement_reqs[i]" :status="achs.status[i]" :implemented="achievementData[i].isImplemented" :reward="achievementData[i].reward" :key="i"></achievement>
+        </div>
       </div>
       <span class="vw1">
         <a href="https://github.com/JaymanM/NewIdleProject" target="_blank">Github Repository</a> 
