@@ -360,7 +360,7 @@ const app = new Vue({
           <br>
           <span v-if="implemented">{{ pre }} {{ req }} {{ suf }}.</span>
           <br>
-          <span v-if="reward">Reward: {{ reward }}</span>
+          <span v-if="reward">Reward: {{ reward }}.</span>
         </div>
       `
     } // don't need ternary operator, just us v-if
