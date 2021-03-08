@@ -2,6 +2,7 @@ const nD = val => new Decimal(val)
 
 function DefaultPlayer() {
   return {
+    ver: undefined,
     apples: {
       current: nD(0),
     },
@@ -20,7 +21,7 @@ function DefaultPlayer() {
       current: 1
     },
     achs: {
-      status: new Array(2).fill(false)
+      status: new Array(5).fill(false)
     }
   }
 }
@@ -91,11 +92,17 @@ const store = new Vuex.Store({
     DECREMENT_APPLES: (state, payload) => {
       state.apples.current = state.apples.current.sub(payload);
     },
+    SET_APPLES: (state, payload) => {
+      state.apples.current = payload;
+    },
     INCREMENT_HANDS: (state, payload) => {
       state.hands.current = state.hands.current.add(payload);
     },
     DECREMENT_HANDS: (state, payload) => {
       state.hands.current = state.hands.current.sub(payload);
+    },
+    SET_HANDS: (state, payload) => {
+      state.hands.current = payload;
     },
     SWITCH_TAB: (state, payload) => {
       state.tabs.current = payload;
@@ -114,6 +121,12 @@ const store = new Vuex.Store({
     },
     OBTAIN_ACHIEVEMENT: (state, id) => {
       Vue.set(state.achs.status, id, true);
+    },
+    SET_GAME_VERSION: (state, payload) => {
+      state.ver = payload;
+    },
+    INIT_ACHIEVEMENT_ARRAY: (state, payload) => {
+      state.achs.status = new Array(5).fill(payload)
     }
   }
 });
@@ -122,6 +135,12 @@ const app = new Vue({
   el: "#app",
   store,
   created() {
+    if (this.ver === undefined) {
+      // each update add new variables to transfer save
+      this.setGameVersion("P.O.C 3");
+      this.switchPrecision(0);
+      this.initAchievementArray(false);
+    }
     this.checkAchievements();
     this.req = requestAnimationFrame(this.tick);
     this.time = 0;
@@ -227,14 +246,18 @@ const app = new Vue({
     ...Vuex.mapMutations({
       incrementApples: "INCREMENT_APPLES",
       decrementApples: "DECREMENT_APPLES",
+      setApples: "SET_APPLES",
       incrementHands: "INCREMENT_HANDS",
       decrementHands: "DECREMENT_HANDS",
+      setHands: "SET_HANDS",
       incrementHandsSacrificed: "INCREMENT_HANDS_SACRIFICED",
       switchTab: "SWITCH_TAB",
       switchStyle: "SWITCH_STYLE",
       switchPrecision: "SWITCH_PRECISION",
       switchNotation: "SWITCH_NOTATION",
-      obtainAchievement: "OBTAIN_ACHIEVEMENT"
+      obtainAchievement: "OBTAIN_ACHIEVEMENT",
+      setGameVersion: "SET_GAME_VERSION",
+      initAchievementArray: "INIT_ACHIEVEMENT_ARRAY"
     }),
     tick(timeTaken) {
       const deltaTime = timeTaken - this.time;
